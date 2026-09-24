@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter } from "next/font/google";
+import { ActivadorRevelado } from "@/components/efectos/ActivadorRevelado";
 import "./globals.css";
 
 // Tipografía F1-01 §5: Fraunces (títulos 400/600) + Inter (cuerpo 400/500/600)
@@ -37,8 +38,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="es-CO"
       data-scroll-behavior="smooth"
       className={`${fraunces.variable} ${inter.variable}`}
+      suppressHydrationWarning
     >
-      <body className="flex min-h-dvh flex-col">{children}</body>
+      <head>
+        {/* Habilita las animaciones de revelado solo cuando hay JavaScript */}
+        <script
+          dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }}
+        />
+      </head>
+      <body className="flex min-h-dvh flex-col">
+        {children}
+        <ActivadorRevelado />
+      </body>
     </html>
   );
 }

@@ -39,6 +39,16 @@
   --shadow-sutil: 0 1px 2px rgb(43 38 33 / 0.06), 0 4px 14px rgb(43 38 33 / 0.08);
   /* Sombra sutil de foco en campos (F1-03) */
   --shadow-foco: 0 0 0 3px rgb(47 74 62 / 0.18);
+  /* Elevación de tarjeta al pasar el cursor */
+  --shadow-elevada: 0 2px 4px rgb(43 38 33 / 0.06), 0 18px 40px -12px rgb(43 38 33 / 0.28);
+
+  /* Movimiento: curvas y animaciones reutilizables */
+  --ease-salida: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-suave: cubic-bezier(0.65, 0, 0.35, 1);
+  --animate-entrada: entrada 700ms var(--ease-salida) both;
+  --animate-deriva: deriva 60s ease-in-out infinite alternate;
+  --animate-flotar: flotar 2.4s ease-in-out infinite;
+  --animate-brillo: brillo 1.6s linear infinite;
 
   --container-contenido: 1200px;
 }
@@ -141,5 +151,229 @@
 @media (width < 48rem) {
   body:has([data-barra-cta-fija]) {
     padding-bottom: 88px;
+  }
+}
+
+/* ------------------------------------------------------------------------------------------
+ * Movimiento
+ * Todo usa transform/opacity (sin reflujo) y se apaga con prefers-reduced-motion.
+ * ---------------------------------------------------------------------------------------- */
+
+@keyframes entrada {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes deriva {
+  from {
+    transform: translate3d(-4%, 0, 0);
+  }
+  to {
+    transform: translate3d(4%, 0, 0);
+  }
+}
+
+@keyframes flotar {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 6px, 0);
+  }
+}
+
+@keyframes brillo {
+  from {
+    background-position: 150% 0;
+  }
+  to {
+    background-position: -50% 0;
+  }
+}
+
+@keyframes dibujar {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes desde-derecha {
+  from {
+    opacity: 0;
+    transform: translate3d(32px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes desde-izquierda {
+  from {
+    opacity: 0;
+    transform: translate3d(-32px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes subir-panel {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0) scale(0.98);
+  }
+}
+
+@utility animar-desde-derecha {
+  animation: desde-derecha 420ms var(--ease-salida) both;
+}
+
+@utility animar-desde-izquierda {
+  animation: desde-izquierda 420ms var(--ease-salida) both;
+}
+
+/* Revelado al hacer scroll (ver components/efectos/ActivadorRevelado.tsx).
+ * Solo se oculta contenido si hay JavaScript (clase .js en <html>). */
+.js [data-revelar] {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition:
+    opacity 900ms var(--ease-salida),
+    transform 900ms var(--ease-salida);
+  transition-delay: var(--retraso, 0ms);
+}
+
+.js [data-revelar="escala"] {
+  transform: scale(0.96);
+}
+
+.js [data-revelar="izquierda"] {
+  transform: translate3d(-32px, 0, 0);
+}
+
+.js [data-revelar="derecha"] {
+  transform: translate3d(32px, 0, 0);
+}
+
+.js [data-revelar][data-visible] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Esqueleto con brillo */
+.esqueleto {
+  background: linear-gradient(100deg, transparent 30%, rgb(255 253 249 / 0.55) 50%, transparent 70%)
+    var(--color-arena);
+  background-size: 200% 100%;
+  animation: var(--animate-brillo);
+}
+
+/* Transiciones entre páginas (React <ViewTransition>, ver app/(sitio)/template.tsx) */
+::view-transition {
+  pointer-events: none;
+}
+
+::view-transition-group(encabezado) {
+  animation: none;
+  z-index: 100;
+}
+
+::view-transition-old(encabezado) {
+  display: none;
+}
+
+::view-transition-new(encabezado) {
+  animation: none;
+}
+
+::view-transition-old(.pagina) {
+  animation: 180ms ease-in both salir-pagina;
+}
+
+::view-transition-new(.pagina) {
+  animation: 420ms var(--ease-salida) 120ms both entrar-pagina;
+}
+
+@keyframes salir-pagina {
+  to {
+    opacity: 0;
+    transform: translate3d(0, -8px, 0);
+  }
+}
+
+@keyframes entrar-pagina {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+}
+
+/* Foto de un domo que viaja de la tarjeta a la ficha */
+::view-transition-group(.morph) {
+  animation-duration: 520ms;
+  animation-timing-function: var(--ease-salida);
+}
+
+::view-transition-image-pair(.morph) {
+  animation-name: via-desenfoque;
+}
+
+@keyframes via-desenfoque {
+  35% {
+    filter: blur(2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .js [data-revelar] {
+    opacity: 1;
+    transform: none;
+  }
+
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}
+
+@keyframes halo {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  12% {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.9);
   }
 }

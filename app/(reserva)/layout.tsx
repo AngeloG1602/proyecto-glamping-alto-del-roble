@@ -5,7 +5,7 @@ export default function LayoutReserva({ children }: LayoutProps<"/">) {
   return (
     <>
       <HeaderReserva />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 overflow-x-clip">{children}</main>
       <FooterReserva />
     </>
   );
