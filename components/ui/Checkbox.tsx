@@ -52,12 +52,7 @@ export function GrupoRadio({ leyenda, opciones, error, className = "", ...props 
             key={opcion.valor}
             className="flex min-h-12 flex-1 cursor-pointer items-center gap-3 rounded-input border border-borde bg-blanco px-4 has-[:checked]:border-bosque has-[:checked]:shadow-foco"
           >
-            <input
-              {...props}
-              type="radio"
-              value={opcion.valor}
-              className="size-4 accent-bosque"
-            />
+            <input {...props} type="radio" value={opcion.valor} className="size-4 accent-bosque" />
             {opcion.etiqueta}
           </label>
         ))}
