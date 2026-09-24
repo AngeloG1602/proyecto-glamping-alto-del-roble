@@ -131,7 +131,7 @@ export function CalendarioDisponibilidad({ ocupadas, rango, onCambiar, meses = 1
           <span className="size-4 rounded-[4px] bg-borde/60" /> Ocupado
         </li>
         <li className="flex items-center gap-2">
-          <span className="size-4 rounded-[4px] bg-bosque" /> Tu estadía
+          <span className="size-4 rounded-[4px] bg-bosque" /> Llegada y salida
         </li>
         <li>Precio por noche en miles de pesos</li>
       </ul>
@@ -213,7 +213,7 @@ function Dia({ fecha, pasado, ocupado, seleccionable, rango, onElegir }: PropsDi
   let estilo = "bg-blanco border border-borde text-carbon hover:border-bosque";
   if (pasado) estilo = "text-marron/40";
   else if (ocupado) estilo = "bg-borde/60 text-marron/70 line-through";
-  if (enRango) estilo = "bg-arena border border-arena text-carbon";
+  if (enRango) estilo = "bg-bosque/15 border border-bosque/40 text-carbon";
   if (esExtremo) estilo = "bg-bosque border border-bosque text-blanco";
 
   const descripcion = [
