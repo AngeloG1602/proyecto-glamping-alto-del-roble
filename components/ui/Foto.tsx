@@ -28,7 +28,7 @@ export function Foto({ src, alt, sizes, prioridad = false, className = "" }: Pro
         className={`absolute inset-0 flex flex-col items-center justify-center gap-2 bg-arena text-marron ${className}`}
       >
         <Mountain {...ICONO} />
-        <span className="text-pequeno">Foto no disponible</span>
+        {alt && <span className="text-pequeno">Foto no disponible</span>}
       </div>
     );
   }
