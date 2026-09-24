@@ -23,3 +23,7 @@ export function formatearFechaLarga(fechaISO: string): string {
 export function pluralizar(cantidad: number, singular: string, plural: string): string {
   return `${cantidad} ${cantidad === 1 ? singular : plural}`;
 }
+
+export function capitalizar(texto: string): string {
+  return texto.charAt(0).toUpperCase() + texto.slice(1);
+}
