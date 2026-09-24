@@ -6,6 +6,7 @@ import { Foto } from "@/components/ui/Foto";
 import { ICONO } from "@/components/ui/icono";
 import { FOTO_PAISAJE } from "@/lib/data/domos";
 import { NEGOCIO, NOSOTROS } from "@/lib/data/negocio";
+import { retraso } from "@/lib/efectos";
 
 export const metadata: Metadata = {
   title: "Nosotros — Andrés y Mariana, Glamping Alto del Roble",
@@ -34,11 +35,16 @@ export default function Nosotros() {
 
       <div className="contenedor grid gap-8 pb-12 md:grid-cols-2 md:gap-12 md:pb-16">
         <div className="space-y-4">
-          {NOSOTROS.historia.map((parrafo) => (
-            <p key={parrafo.slice(0, 20)}>{parrafo}</p>
+          {NOSOTROS.historia.map((parrafo, i) => (
+            <p key={parrafo.slice(0, 20)} data-revelar style={retraso(i, 120)}>
+              {parrafo}
+            </p>
           ))}
         </div>
-        <div className="relative aspect-[4/3] overflow-hidden rounded-tarjeta bg-arena">
+        <div
+          data-revelar="escala"
+          className="relative aspect-[4/3] overflow-hidden rounded-tarjeta bg-arena shadow-sutil"
+        >
           <Foto
             src={FOTO_PAISAJE}
             alt="Vista de la represa de Tominé desde Alto del Roble"
@@ -50,8 +56,10 @@ export default function Nosotros() {
 
       <section className="contenedor pb-12 md:pb-16" aria-label="Datos del glamping">
         <ul className="grid gap-4 md:grid-cols-3">
-          {datos.map(({ icono: Icono, titulo, texto }) => (
+          {datos.map(({ icono: Icono, titulo, texto }, i) => (
             <li
+              data-revelar
+              style={retraso(i, 120)}
               key={titulo}
               className="flex items-center gap-4 rounded-tarjeta border border-borde bg-blanco p-6"
             >

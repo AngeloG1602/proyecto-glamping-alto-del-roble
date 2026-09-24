@@ -4,6 +4,7 @@ import { CierreVerDomos } from "@/components/layout/CierreVerDomos";
 import { EncabezadoPagina } from "@/components/layout/EncabezadoPagina";
 import { ICONO } from "@/components/ui/icono";
 import { COMO_LLEGAR, NEGOCIO } from "@/lib/data/negocio";
+import { retraso } from "@/lib/efectos";
 
 export const metadata: Metadata = {
   title: "Cómo llegar a Alto del Roble — glamping cerca de Bogotá, en Guatavita",
@@ -15,13 +16,19 @@ function Bloque({
   icono: Icono,
   titulo,
   children,
+  indice = 0,
 }: {
   icono: typeof Car;
   titulo: string;
   children: React.ReactNode;
+  indice?: number;
 }) {
   return (
-    <section className="rounded-tarjeta border border-borde bg-blanco p-6">
+    <section
+      data-revelar
+      style={retraso(indice % 2)}
+      className="rounded-tarjeta border border-borde bg-blanco p-6 transition-shadow duration-500 hover:shadow-sutil"
+    >
       <h2 className="flex items-center gap-3 text-h3 text-bosque">
         <Icono {...ICONO} />
         {titulo}
@@ -40,7 +47,10 @@ export default function ComoLlegar() {
 
       <div className="contenedor pb-12 md:pb-16">
         {/* F2-03 I-03: iframe público con la ubicación */}
-        <div className="overflow-hidden rounded-tarjeta border border-borde bg-arena">
+        <div
+          data-revelar="escala"
+          className="overflow-hidden rounded-tarjeta border border-borde bg-arena"
+        >
           <iframe
             src={mapa}
             title="Mapa de la ubicación de Alto del Roble en Guatavita"
@@ -55,13 +65,13 @@ export default function ComoLlegar() {
         </p>
 
         <div className="mt-12 grid gap-6 md:grid-cols-2">
-          {COMO_LLEGAR.rutas.map((ruta) => (
-            <Bloque key={ruta.titulo} icono={Car} titulo={ruta.titulo}>
+          {COMO_LLEGAR.rutas.map((ruta, i) => (
+            <Bloque key={ruta.titulo} icono={Car} titulo={ruta.titulo} indice={i}>
               <p>{ruta.texto}</p>
             </Bloque>
           ))}
 
-          <Bloque icono={Clock} titulo="Llegada y salida">
+          <Bloque icono={Clock} titulo="Llegada y salida" indice={2}>
             <dl className="space-y-2">
               <div className="flex justify-between gap-4">
                 <dt className="text-marron">Llegada (check-in)</dt>
@@ -74,7 +84,7 @@ export default function ComoLlegar() {
             </dl>
           </Bloque>
 
-          <Bloque icono={PawPrint} titulo="Mascotas">
+          <Bloque icono={PawPrint} titulo="Mascotas" indice={3}>
             <ul className="list-disc space-y-1 pl-5">
               {COMO_LLEGAR.mascotas.map((regla) => (
                 <li key={regla}>{regla}</li>
@@ -82,7 +92,7 @@ export default function ComoLlegar() {
             </ul>
           </Bloque>
 
-          <Bloque icono={Backpack} titulo="Qué llevar">
+          <Bloque icono={Backpack} titulo="Qué llevar" indice={4}>
             <ul className="list-disc space-y-1 pl-5">
               {COMO_LLEGAR.queLlevar.map((item) => (
                 <li key={item}>{item}</li>

@@ -9,7 +9,7 @@ type Props = { titulo: string; texto?: string; textoBoton?: string };
 export function CierreVerDomos({ titulo, texto, textoBoton = "Ver los domos" }: Props) {
   return (
     <section className="bg-arena py-12 md:py-16">
-      <div className="contenedor flex flex-col items-center gap-4 text-center">
+      <div data-revelar className="contenedor flex flex-col items-center gap-4 text-center">
         <h2 className="text-h2 text-bosque">{titulo}</h2>
         {texto && <p className="max-w-xl text-marron">{texto}</p>}
         <ButtonLink href="/domos" variante="secundario" className="mt-2 w-full sm:w-auto sm:px-12">
