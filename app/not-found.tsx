@@ -1,6 +1,9 @@
+import type { Metadata } from "next";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { ButtonLink } from "@/components/ui/Button";
+
+export const metadata: Metadata = { title: "Página no encontrada" };
 
 export default function NoEncontrada() {
   return (

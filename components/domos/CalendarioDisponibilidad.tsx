@@ -13,7 +13,7 @@ import {
 } from "date-fns";
 import { es } from "date-fns/locale";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
 import { ICONO } from "@/components/ui/icono";
 import { formatearPesos } from "@/lib/formato";
 import { aISO, hoyISO, nochesDeEstadia, type FechaISO } from "@/lib/reservas/fechas";
@@ -39,8 +39,21 @@ const MESES_ADELANTE = 12;
  * elegir como llegada (F2-01 regla 3), pero sí como día de salida: esa mañana el domo
  * se libera para el siguiente huésped.
  */
-export function CalendarioDisponibilidad({ ocupadas, rango, onCambiar, meses = 1 }: Props) {
-  const hoy = hoyISO();
+const sinSuscripcion = () => () => {};
+
+/**
+ * "Hoy" se toma del navegador: las fichas se prerenderizan y la fecha del servidor en el
+ * momento del build no sirve para decidir qué días ya pasaron.
+ */
+export function CalendarioDisponibilidad(props: Props) {
+  const hoy = useSyncExternalStore(sinSuscripcion, hoyISO, () => null);
+  if (!hoy) {
+    return <div className="h-[430px] animate-pulse rounded-input bg-arena/60 md:h-[480px]" />;
+  }
+  return <Calendario {...props} hoy={hoy} />;
+}
+
+function Calendario({ ocupadas, rango, onCambiar, meses = 1, hoy }: Props & { hoy: FechaISO }) {
   const primerMes = startOfMonth(parseISO(hoy));
   const [mesVisible, setMesVisible] = useState(() => startOfMonth(parseISO(rango.entrada ?? hoy)));
   const [aviso, setAviso] = useState<string | null>(null);
