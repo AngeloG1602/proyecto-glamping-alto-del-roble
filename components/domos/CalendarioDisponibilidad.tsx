@@ -56,6 +56,11 @@ export function CalendarioDisponibilidad(props: Props) {
 function Calendario({ ocupadas, rango, onCambiar, meses = 1, hoy }: Props & { hoy: FechaISO }) {
   const primerMes = startOfMonth(parseISO(hoy));
   const [mesVisible, setMesVisible] = useState(() => startOfMonth(parseISO(rango.entrada ?? hoy)));
+  const [haciaAtras, setHaciaAtras] = useState(false);
+  const moverMes = (delta: number) => {
+    setHaciaAtras(delta < 0);
+    setMesVisible((mes) => addMonths(mes, delta));
+  };
   const [aviso, setAviso] = useState<string | null>(null);
   const ocupadasSet = useMemo(() => new Set(ocupadas), [ocupadas]);
 
@@ -92,7 +97,7 @@ function Calendario({ ocupadas, rango, onCambiar, meses = 1, hoy }: Props & { ho
       <div className="mb-4 flex items-center justify-between">
         <button
           type="button"
-          onClick={() => setMesVisible((mes) => addMonths(mes, -1))}
+          onClick={() => moverMes(-1)}
           disabled={!puedeRetroceder}
           aria-label="Mes anterior"
           className="rounded-boton p-2 text-bosque hover:bg-arena disabled:opacity-30"
@@ -106,7 +111,7 @@ function Calendario({ ocupadas, rango, onCambiar, meses = 1, hoy }: Props & { ho
         </p>
         <button
           type="button"
-          onClick={() => setMesVisible((mes) => addMonths(mes, 1))}
+          onClick={() => moverMes(1)}
           disabled={!puedeAvanzar}
           aria-label="Mes siguiente"
           className="rounded-boton p-2 text-bosque hover:bg-arena disabled:opacity-30"
@@ -115,7 +120,10 @@ function Calendario({ ocupadas, rango, onCambiar, meses = 1, hoy }: Props & { ho
         </button>
       </div>
 
-      <div className={`grid gap-8 ${meses === 2 ? "lg:grid-cols-2" : ""}`}>
+      <div
+        key={mesVisible.toISOString()}
+        className={`grid gap-8 ${meses === 2 ? "lg:grid-cols-2" : ""} ${haciaAtras ? "animar-desde-izquierda" : "animar-desde-derecha"}`}
+      >
         {Array.from({ length: meses }, (_, i) => (
           <Mes
             key={i}
@@ -246,7 +254,7 @@ function Dia({ fecha, pasado, ocupado, seleccionable, rango, onElegir }: PropsDi
         onClick={() => onElegir(fecha)}
         aria-label={descripcion}
         aria-pressed={esExtremo}
-        className={`flex h-12 w-full flex-col items-center justify-center rounded-input leading-none transition-colors disabled:cursor-not-allowed md:h-14 ${estilo}`}
+        className={`flex h-12 w-full flex-col items-center justify-center rounded-input leading-none transition-[background-color,border-color,color,transform] duration-300 ease-salida enabled:hover:-translate-y-0.5 enabled:active:scale-95 disabled:cursor-not-allowed md:h-14 ${estilo}`}
       >
         <span className="text-[15px] font-medium">{Number(fecha.slice(8))}</span>
         {muestraPrecio && (

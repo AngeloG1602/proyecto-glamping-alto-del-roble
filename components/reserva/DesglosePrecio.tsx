@@ -1,3 +1,6 @@
+"use client";
+
+import { PesosAnimados } from "@/components/efectos/NumeroAnimado";
 import { formatearPesos, pluralizar } from "@/lib/formato";
 import { agruparNoches, NOMBRE_TIPO_NOCHE, type Cotizacion } from "@/lib/reservas/precios";
 
@@ -15,14 +18,19 @@ export function DesglosePrecio({ cotizacion }: { cotizacion: Cotizacion }) {
         </div>
       ))}
       {cotizacion.extras.map((extra) => (
-        <div key={extra.id} className="flex justify-between gap-4">
+        <div
+          key={extra.id}
+          className="flex animate-entrada justify-between gap-4 [animation-duration:450ms]"
+        >
           <dt className="text-marron">{extra.nombre}</dt>
           <dd>{formatearPesos(extra.precio)}</dd>
         </div>
       ))}
       <div className="flex items-baseline justify-between gap-4 border-t border-borde pt-3">
         <dt className="font-semibold text-carbon">Total</dt>
-        <dd className="text-h3 font-cuerpo text-carbon">{formatearPesos(cotizacion.total)}</dd>
+        <dd className="text-h3 font-cuerpo text-carbon">
+          <PesosAnimados valor={cotizacion.total} />
+        </dd>
       </div>
     </dl>
   );

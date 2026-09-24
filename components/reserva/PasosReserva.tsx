@@ -23,15 +23,24 @@ export function PasosReserva({ actual, onIrA }: Props) {
                 className="flex items-center gap-2 text-left disabled:cursor-default"
               >
                 <span
-                  className={`flex size-8 shrink-0 items-center justify-center rounded-full text-pequeno font-semibold ${
+                  className={`flex size-8 shrink-0 items-center justify-center rounded-full text-pequeno font-semibold transition-[background-color,color,border-color,box-shadow] duration-500 ease-salida ${
                     esActual
-                      ? "bg-bosque text-blanco"
+                      ? "bg-bosque text-blanco shadow-[0_0_0_5px_rgb(47_74_62/0.15)]"
                       : completado
                         ? "border border-bosque text-bosque"
                         : "border border-borde text-marron"
                   }`}
                 >
-                  {completado ? <Check size={16} strokeWidth={2} aria-hidden /> : numero}
+                  {completado ? (
+                    <Check
+                      size={16}
+                      strokeWidth={2}
+                      aria-hidden
+                      className="animate-entrada [animation-duration:400ms]"
+                    />
+                  ) : (
+                    numero
+                  )}
                 </span>
                 <span
                   className={`hidden text-pequeno sm:inline ${esActual ? "font-semibold text-carbon" : "text-marron"} ${completado ? "underline underline-offset-2" : ""}`}
@@ -39,7 +48,16 @@ export function PasosReserva({ actual, onIrA }: Props) {
                   {nombre}
                 </span>
               </button>
-              {numero < PASOS.length && <span aria-hidden className="h-px flex-1 bg-borde" />}
+              {numero < PASOS.length && (
+                <span
+                  aria-hidden
+                  className="relative h-0.5 flex-1 overflow-hidden rounded-full bg-borde"
+                >
+                  <span
+                    className={`absolute inset-0 origin-left bg-bosque transition-transform duration-700 ease-salida ${completado ? "scale-x-100" : "scale-x-0"}`}
+                  />
+                </span>
+              )}
             </li>
           );
         })}

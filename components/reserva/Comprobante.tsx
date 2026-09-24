@@ -1,9 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import { ArrowRight, CircleCheck, Clock, Info, MessageCircle } from "lucide-react";
+import { CircleCheck, Clock, Info, MessageCircle } from "lucide-react";
+import { CheckAnimado } from "@/components/efectos/CheckAnimado";
 import { useSyncExternalStore } from "react";
 import { ButtonLink } from "@/components/ui/Button";
+import { EnlaceFlecha } from "@/components/ui/EnlaceFlecha";
 import { ICONO } from "@/components/ui/icono";
 import { obtenerDomoPorId } from "@/lib/data/domos";
 import { enlaceWhatsApp, NEGOCIO, POLITICA_CANCELACION } from "@/lib/data/negocio";
@@ -50,12 +51,20 @@ export function Comprobante() {
   return (
     <div className="contenedor max-w-[720px] py-8 md:py-16">
       <div className="text-center">
-        <CircleCheck size={56} strokeWidth={1.5} aria-hidden className="mx-auto text-exito" />
-        <h1 className="mt-4 text-h1 text-bosque">Tu reserva está confirmada</h1>
-        <p className="mt-3 text-[18px]">
+        <CheckAnimado />
+        <h1
+          className="mt-6 animate-entrada text-h1 text-bosque"
+          style={{ animationDelay: "600ms" }}
+        >
+          Tu reserva está confirmada
+        </h1>
+        <p className="mt-3 animate-entrada text-[18px]" style={{ animationDelay: "720ms" }}>
           {reserva.huesped.nombre.split(" ")[0]}, te esperamos en el {domo.nombre}.
         </p>
-        <p className="mt-4 inline-block rounded-boton border border-exito px-4 py-2 font-semibold text-exito">
+        <p
+          className="mt-4 inline-block animate-entrada rounded-boton border border-exito px-4 py-2 font-semibold text-exito"
+          style={{ animationDelay: "840ms" }}
+        >
           Código de reserva: {reserva.codigo}
         </p>
       </div>
@@ -83,7 +92,11 @@ export function Comprobante() {
         </div>
       </section>
 
-      <section className="mt-8" aria-labelledby="titulo-sigue">
+      <section
+        className="mt-8 animate-entrada"
+        style={{ animationDelay: "1080ms" }}
+        aria-labelledby="titulo-sigue"
+      >
         <h2 id="titulo-sigue" className="text-h2 text-bosque">
           Qué sigue
         </h2>
@@ -107,13 +120,9 @@ export function Comprobante() {
             <span>{POLITICA_CANCELACION.resumen}</span>
           </li>
         </ol>
-        <Link
-          href="/como-llegar"
-          className="mt-6 inline-flex items-center gap-2 font-medium text-bosque underline underline-offset-4"
-        >
+        <EnlaceFlecha href="/como-llegar" className="mt-6">
           Ver cómo llegar y qué llevar
-          <ArrowRight {...ICONO} />
-        </Link>
+        </EnlaceFlecha>
       </section>
 
       <p className="mt-10 flex gap-3 rounded-input border border-borde p-4 text-pequeno text-marron">

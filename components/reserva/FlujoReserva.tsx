@@ -40,6 +40,7 @@ export function FlujoReserva({ domoInicial, rangoInicial, ocupadasPorDomo }: Pro
   const router = useRouter();
   const inicio = useRef<HTMLDivElement>(null);
   const [paso, setPaso] = useState(1);
+  const [haciaAtras, setHaciaAtras] = useState(false);
   const [domoId, setDomoId] = useState(domoInicial ?? "");
   const [rango, setRango] = useState<RangoFechas>(rangoInicial);
   const [extrasIds, setExtrasIds] = useState<string[]>([]);
@@ -56,6 +57,7 @@ export function FlujoReserva({ domoInicial, rangoInicial, ocupadasPorDomo }: Pro
   );
 
   const irA = (siguiente: number) => {
+    setHaciaAtras(siguiente < paso);
     setPaso(siguiente);
     inicio.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
@@ -110,7 +112,10 @@ export function FlujoReserva({ domoInicial, rangoInicial, ocupadasPorDomo }: Pro
       </div>
 
       <div className="grid gap-8 lg:grid-cols-[1fr_360px] lg:items-start">
-        <div className="min-w-0">
+        <div
+          key={paso}
+          className={`min-w-0 ${haciaAtras ? "animar-desde-izquierda" : "animar-desde-derecha"}`}
+        >
           {paso === 1 && (
             <section aria-labelledby="titulo-paso">
               <h2 id="titulo-paso" className="text-h2 text-bosque">

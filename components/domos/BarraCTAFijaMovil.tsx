@@ -1,5 +1,6 @@
 "use client";
 
+import { PesosAnimados } from "@/components/efectos/NumeroAnimado";
 import { ButtonLink } from "@/components/ui/Button";
 import { formatearPesos, pluralizar } from "@/lib/formato";
 import { contarNoches } from "@/lib/reservas/fechas";
@@ -14,7 +15,7 @@ export function BarraCTAFijaMovil({ slug }: { slug: string }) {
   return (
     <div
       data-barra-cta-fija
-      className="fixed inset-x-0 bottom-0 z-30 border-t border-borde bg-hueso px-5 py-3 md:hidden"
+      className="fixed inset-x-0 bottom-0 z-30 animate-entrada border-t border-borde bg-hueso/90 px-5 py-3 shadow-[0_-10px_30px_-20px_rgb(43_38_33/0.5)] backdrop-blur-md [animation-delay:500ms] md:hidden"
     >
       <div className="flex items-center justify-between gap-4">
         <p className="text-pequeno text-marron">
@@ -22,7 +23,7 @@ export function BarraCTAFijaMovil({ slug }: { slug: string }) {
             <>
               {pluralizar(contarNoches(rango.entrada!, rango.salida!), "noche", "noches")}
               <span className="block text-cuerpo font-semibold text-carbon">
-                {formatearPesos(cotizar(rango.entrada!, rango.salida!).total)}
+                <PesosAnimados valor={cotizar(rango.entrada!, rango.salida!).total} />
               </span>
             </>
           ) : (
