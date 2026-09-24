@@ -1,1 +1,138 @@
 @import "tailwindcss";
+
+/*
+ * Tokens de diseño — fuente: docs/F1-01-identidad-visual.md y docs/F1-03-ui-kit.md.
+ * La paleta, los radios y las sombras por defecto de Tailwind se anulan para que
+ * en el código solo existan los valores aprobados.
+ *
+ * Espaciado (F1-01 §6, base 8px) → utilidades numéricas de Tailwind:
+ *   xs 8px = 2 · sm 16px = 4 · md 24px = 6 · lg 32px = 8 · xl 48px = 12 · 2xl 64px = 16
+ */
+@theme {
+  --color-*: initial;
+  --color-bosque: #2f4a3e; /* Primario: marca, navegación, footer, títulos de sección */
+  --color-bosque-profundo: #22362c; /* Hover/pressed del primario */
+  --color-cobre: #a85526; /* Acento: SOLO botones de acción (reservar, pagar) — F1-06 §4 */
+  --color-cobre-oscuro: #974c22; /* Hover del botón primario: cobre 10% más oscuro (F1-03) */
+  --color-hueso: #faf6ef; /* Fondo general */
+  --color-arena: #ede4d3; /* Secciones alternas, tarjetas */
+  --color-carbon: #2b2621; /* Texto principal */
+  --color-marron: #6b5f53; /* Texto secundario */
+  --color-borde: #dcd0bc; /* Líneas, separadores, campos */
+  --color-exito: #4c7a55; /* Confirmación de reserva y pago */
+  --color-error: #8c3b2a; /* Validaciones fallidas */
+  --color-blanco: #fffdf9; /* Texto sobre botón primario (F1-03) */
+
+  --font-*: initial;
+  --font-titulo: var(--font-fraunces), Georgia, serif;
+  --font-cuerpo: var(--font-inter), system-ui, sans-serif;
+
+  --text-*: initial;
+
+  --radius-*: initial;
+  --radius-boton: 8px;
+  --radius-tarjeta: 12px;
+  --radius-input: 6px;
+
+  --shadow-*: initial;
+  /* Única sombra permitida: tarjetas de domo, "foto flotante" (F1-01 §7) */
+  --shadow-sutil: 0 1px 2px rgb(43 38 33 / 0.06), 0 4px 14px rgb(43 38 33 / 0.08);
+  /* Sombra sutil de foco en campos (F1-03) */
+  --shadow-foco: 0 0 0 3px rgb(47 74 62 / 0.18);
+
+  --container-contenido: 1200px;
+}
+
+/* Escala tipográfica (F1-01 §5). Móvil primero; tamaño desktop desde 768px. */
+@utility text-h1 {
+  font-family: var(--font-titulo);
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.15;
+  @media (width >= 48rem) {
+    font-size: 48px;
+  }
+}
+
+@utility text-h2 {
+  font-family: var(--font-titulo);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.2;
+  @media (width >= 48rem) {
+    font-size: 32px;
+  }
+}
+
+@utility text-h3 {
+  font-family: var(--font-titulo);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.25;
+  @media (width >= 48rem) {
+    font-size: 22px;
+  }
+}
+
+@utility text-cuerpo {
+  font-size: 16px;
+  line-height: 1.5;
+  @media (width >= 48rem) {
+    font-size: 17px;
+  }
+}
+
+@utility text-pequeno {
+  font-size: 13px;
+  line-height: 1.5;
+  @media (width >= 48rem) {
+    font-size: 14px;
+  }
+}
+
+@utility text-boton {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  @media (width >= 48rem) {
+    font-size: 16px;
+  }
+}
+
+/* Ancho máximo del contenido 1200px + padding lateral de 20px (F1-01 §6) */
+@utility contenedor {
+  width: 100%;
+  max-width: calc(var(--container-contenido) + 40px);
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-hueso);
+    color: var(--color-carbon);
+    font-family: var(--font-cuerpo);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    @media (width >= 48rem) {
+      font-size: 17px;
+    }
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-titulo);
+    font-weight: 600;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-bosque);
+    outline-offset: 2px;
+  }
+}
