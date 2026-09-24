@@ -5,8 +5,8 @@
  * campo por campo, para que migrar al seed de Prisma sea copiar estos arreglos.
  *
  * ⚠️ CONTENIDO DE EJEMPLO: nombres, descripciones y capacidades son borrador (F2-02 §5:
- * "nombre y fotos genéricas, editables después"). Las fotos son de stock (Unsplash),
- * temporales hasta tener el banco de Instagram del cliente. Los precios de los extras
+ * "nombre y fotos genéricas, editables después"). Las fotos son ilustraciones generadas para
+ * el caso ficticio, hasta tener el banco de Instagram del cliente. Los precios de los extras
  * sí son reales (F2-01 regla 5).
  */
 
@@ -30,31 +30,14 @@ export type Extra = {
   descripcion: string;
 };
 
-const unsplash = (id: string) =>
-  `https://images.unsplash.com/${id}?auto=format&fit=crop&w=1600&q=80`;
+/** Ilustraciones generadas para el caso ficticio, en /public/fotos (1600×1200) */
+const foto = (nombre: string) => `/fotos/${nombre}.jpg`;
+const fotosDomo = (clave: string) => [1, 2, 3, 4].map((n) => foto(`${clave}-${n}`));
 
-// Fotos de stock temporales (EJEMPLO)
-const FOTO = {
-  carpa: unsplash("photo-1504280390367-361c6d9f38f4"),
-  carpaEstrellas: unsplash("photo-1478131143081-80f7f84ca84d"),
-  carpaNoche: unsplash("photo-1510312305653-8ed496efae75"),
-  lagoMontanas: unsplash("photo-1501785888041-af3ef285b470"),
-  casaLago: unsplash("photo-1470770841072-f978cf4d019e"),
-  lago: unsplash("photo-1439066615861-d1af74d74000"),
-  montanasNubes: unsplash("photo-1506905925346-21bda4d32df4"),
-  cumbres: unsplash("photo-1464822759023-fed622ff2c3b"),
-  bosque: unsplash("photo-1441974231531-c6227db76b6e"),
-  atardecer: unsplash("photo-1469474968028-56623f02e42e"),
-  colinas: unsplash("photo-1472214103451-9374bd1c798e"),
-  cena: unsplash("photo-1414235077428-338989a2e8c0"),
-  masaje: unsplash("photo-1544161515-4ab6ce6db874"),
-  decoracion: unsplash("photo-1519225421980-715cb0215aed"),
-} as const;
-
-/** Foto principal del inicio (EJEMPLO, stock temporal) */
-export const FOTO_HERO = FOTO.lagoMontanas;
-/** Foto de paisaje para /como-llegar y /nosotros (EJEMPLO, stock temporal) */
-export const FOTO_PAISAJE = FOTO.colinas;
+/** Foto principal del inicio */
+export const FOTO_HERO = foto("hero");
+/** Foto de paisaje para /nosotros */
+export const FOTO_PAISAJE = foto("paisaje-represa");
 
 export const DOMOS: Domo[] = [
   {
@@ -65,7 +48,7 @@ export const DOMOS: Domo[] = [
     descripcionLarga:
       "El Domo Roble está en el punto más alto del terreno, a pocos pasos del borde. La cama mira hacia la ventana panorámica, así que la represa es lo primero que ves al abrir los ojos. Tiene terraza privada con dos sillas para el café de la mañana y una malla colgante para cuando cae la tarde.",
     capacidad: 2,
-    fotos: [FOTO.carpa, FOTO.lagoMontanas, FOTO.bosque, FOTO.montanasNubes],
+    fotos: fotosDomo("roble"),
   },
   {
     id: "336c3279-e341-426c-a625-00fe26d3834c",
@@ -75,7 +58,7 @@ export const DOMOS: Domo[] = [
     descripcionLarga:
       "El Domo Encenillo quedó entre un bosquecito de encenillos, separado de los demás por un sendero corto. Es el que elige quien quiere silencio de verdad: no se ve otro domo desde la terraza. La represa aparece entre los árboles, y de noche el cielo se ve sin luces alrededor.",
     capacidad: 2,
-    fotos: [FOTO.carpaEstrellas, FOTO.bosque, FOTO.lago, FOTO.atardecer],
+    fotos: fotosDomo("encenillo"),
   },
   {
     id: "5c174c5e-3fee-46c1-97c9-d35648e11f22",
@@ -85,7 +68,7 @@ export const DOMOS: Domo[] = [
     descripcionLarga:
       "El Domo Arrayán está orientado hacia el occidente: el sol se esconde detrás de las montañas justo frente a su terraza. Tiene tina de agua caliente al aire libre, cubierta, para usar aunque llueva. Adentro, cama doble, chimenea de leña y ventana panorámica hacia la represa.",
     capacidad: 2,
-    fotos: [FOTO.carpaNoche, FOTO.atardecer, FOTO.lagoMontanas, FOTO.colinas],
+    fotos: fotosDomo("arrayan"),
   },
   {
     id: "ac080640-fbae-4760-94a4-1047318d1657",
@@ -95,7 +78,7 @@ export const DOMOS: Domo[] = [
     descripcionLarga:
       "El Domo Frailejón tiene un segundo nivel tipo mezanine con colchón y una claraboya en el techo: de noche, si el cielo está despejado, te acuestas a ver las estrellas sin salir del domo. Abajo, cama doble y sala pequeña frente a la ventana que da a la represa.",
     capacidad: 3,
-    fotos: [FOTO.carpaEstrellas, FOTO.montanasNubes, FOTO.cumbres, FOTO.lago],
+    fotos: fotosDomo("frailejon"),
   },
   {
     id: "316389bf-14e7-4ee0-a0bc-d5d2cb5e2b24",
@@ -105,7 +88,7 @@ export const DOMOS: Domo[] = [
     descripcionLarga:
       "El Domo Sietecueros es el más grande del glamping, pensado para viajar con amigos o con familia. Tiene cama doble, dos camas sencillas, baño privado amplio y una terraza con mesa para cuatro. La vista a la represa se comparte desde la ventana principal y desde la terraza.",
     capacidad: 4,
-    fotos: [FOTO.casaLago, FOTO.carpa, FOTO.colinas, FOTO.lagoMontanas],
+    fotos: fotosDomo("sietecueros"),
   },
   {
     id: "e5c80c1f-820b-4600-bb6a-79fd470c6186",
@@ -115,7 +98,7 @@ export const DOMOS: Domo[] = [
     descripcionLarga:
       "El Domo Tominé lleva el nombre de la represa que tiene al frente. Su terraza sobre la ladera es la más amplia del glamping y tiene fogata privada: nosotros dejamos la leña lista. Adentro, cama doble y un sofá cama, para una pareja o una pareja con un acompañante.",
     capacidad: 4,
-    fotos: [FOTO.carpaNoche, FOTO.lago, FOTO.bosque, FOTO.cumbres],
+    fotos: fotosDomo("tomine"),
   },
 ];
 
@@ -144,11 +127,11 @@ export const EXTRAS: Extra[] = [
   },
 ];
 
-/** Foto de cada extra por id. No es parte del modelo F2-02; temporal (stock). */
+/** Foto de cada extra por id. No es parte del modelo F2-02. */
 export const FOTOS_EXTRAS: Record<string, string> = {
-  "af60d77a-8049-4d1a-9545-cc0decc35a3f": FOTO.cena,
-  "f3dcb4b1-d957-4b2f-aeba-6f5f597b05a3": FOTO.masaje,
-  "fcf2557d-8847-4f06-a0ea-0f119fc3f06f": FOTO.decoracion,
+  "af60d77a-8049-4d1a-9545-cc0decc35a3f": foto("extra-cena"),
+  "f3dcb4b1-d957-4b2f-aeba-6f5f597b05a3": foto("extra-masaje"),
+  "fcf2557d-8847-4f06-a0ea-0f119fc3f06f": foto("extra-decoracion"),
 };
 
 export function obtenerDomoPorSlug(slug: string): Domo | undefined {
