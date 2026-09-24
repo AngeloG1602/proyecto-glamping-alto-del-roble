@@ -9,6 +9,7 @@ import { Foto } from "@/components/ui/Foto";
 import { ICONO } from "@/components/ui/icono";
 import type { Domo } from "@/lib/data/domos";
 import { formatearFechaCorta, formatearPesos } from "@/lib/formato";
+import { retraso } from "@/lib/efectos";
 import { TARIFA_MINIMA } from "@/lib/reservas/precios";
 import { DomoCard } from "./DomoCard";
 
@@ -43,7 +44,7 @@ export function ComparadorDomos({ domos, proximoFinDeSemana }: Props) {
           {domos.map((domo, i) => {
             const marcado = elegidos.includes(domo.id);
             return (
-              <li key={domo.id} className="flex">
+              <li key={domo.id} className="flex" data-revelar style={retraso(i % 3)}>
                 <DomoCard
                   domo={domo}
                   prioridad={i < 3}
@@ -62,7 +63,7 @@ export function ComparadorDomos({ domos, proximoFinDeSemana }: Props) {
           })}
         </ul>
         {comparados.length >= 2 && (
-          <div className="sticky bottom-4 z-20 mt-8 flex justify-center">
+          <div className="sticky bottom-4 z-20 mt-8 flex animate-entrada justify-center">
             <Link
               href="#comparacion"
               className="rounded-boton bg-bosque px-6 py-3 text-boton text-blanco shadow-sutil hover:bg-bosque-profundo"

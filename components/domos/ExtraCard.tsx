@@ -8,12 +8,13 @@ type Props = { extra: Extra; fondo?: "hueso" | "arena"; compacta?: boolean };
 /** Extra con precio propio y jerarquía visual real, no como anexo (F1-01 §2, ref. 4) */
 export function ExtraCard({ extra, fondo = "hueso", compacta = false }: Props) {
   return (
-    <Card fondo={fondo} className="flex flex-col">
-      <div className={`relative ${compacta ? "aspect-[16/9]" : "aspect-[4/3]"}`}>
+    <Card fondo={fondo} className="group flex flex-col">
+      <div className={`relative overflow-hidden ${compacta ? "aspect-[16/9]" : "aspect-[4/3]"}`}>
         <Foto
           src={FOTOS_EXTRAS[extra.id]}
           alt={extra.nombre}
           sizes="(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw"
+          className="transition-transform duration-[1400ms] ease-salida group-hover:scale-[1.06]"
         />
       </div>
       <div className="flex flex-1 flex-col p-6">
