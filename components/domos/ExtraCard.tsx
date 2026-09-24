@@ -17,7 +17,9 @@ export function ExtraCard({ extra, fondo = "hueso", compacta = false }: Props) {
         />
       </div>
       <div className="flex flex-1 flex-col p-6">
-        <div className="flex items-baseline justify-between gap-4">
+        <div
+          className={`flex gap-x-4 gap-y-1 ${compacta ? "flex-col" : "items-baseline justify-between"}`}
+        >
           <h3 className="text-h3 text-bosque">{extra.nombre}</h3>
           <p className="shrink-0 font-semibold">{formatearPesos(extra.precio)}</p>
         </div>
