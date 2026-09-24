@@ -1,6 +1,4 @@
-import Link from "next/link";
 import {
-  ArrowRight,
   BadgeCheck,
   CalendarDays,
   Car,
@@ -11,19 +9,15 @@ import {
 } from "lucide-react";
 import { DomoCard } from "@/components/domos/DomoCard";
 import { ExtraCard } from "@/components/domos/ExtraCard";
+import { HeroInmersivo } from "@/components/inicio/HeroInmersivo";
 import { ButtonLink } from "@/components/ui/Button";
 import { Foto } from "@/components/ui/Foto";
+import { EnlaceFlecha } from "@/components/ui/EnlaceFlecha";
 import { ICONO } from "@/components/ui/icono";
 import { Seccion } from "@/components/ui/Seccion";
-import { DOMOS, EXTRAS, FOTO_HERO } from "@/lib/data/domos";
+import { DOMOS, EXTRAS, FOTO_CIERRE } from "@/lib/data/domos";
+import { retraso } from "@/lib/efectos";
 import { COMO_LLEGAR, NEGOCIO, POLITICA_CANCELACION } from "@/lib/data/negocio";
-
-// Las tres frases "si solo lee eso" (F1-05 §1)
-const TRES_FRASES = [
-  "Una escapada fuera del ruido, con vista a la represa.",
-  "6 domos, disponibilidad real, sin dobles reservas.",
-  "Reserva confirmada al instante.",
-];
 
 const CONFIANZA = [
   {
@@ -55,48 +49,7 @@ export default function Inicio() {
   return (
     <>
       {/* 1 · Hero (promesa central F1-05 §1) */}
-      <section className="py-8 md:py-16">
-        <div className="contenedor grid items-center gap-8 md:grid-cols-2 md:gap-12">
-          <div>
-            <h1 className="text-h1 text-bosque">
-              Una escapada fuera del ruido, con vista a la represa
-            </h1>
-            <p className="mt-4 text-[18px] md:text-[20px]">
-              Tu domo, tu fin de semana, desconectado de verdad. A dos horas de Bogotá, en
-              Guatavita.
-            </p>
-            <ul className="mt-6 space-y-2">
-              {TRES_FRASES.slice(1).map((frase) => (
-                <li key={frase} className="flex items-center gap-3 text-marron">
-                  <CircleCheck {...ICONO} className="shrink-0 text-bosque" />
-                  {frase}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
-              <ButtonLink href="/domos" variante="secundario">
-                Ver los domos
-              </ButtonLink>
-              <Link
-                id="cta-hero"
-                href="/reservar"
-                className="inline-flex items-center justify-center gap-2 py-2 font-medium text-bosque underline underline-offset-4"
-              >
-                ¿Ya lo decidiste? Reserva directo
-                <ArrowRight {...ICONO} />
-              </Link>
-            </div>
-          </div>
-          <div className="relative aspect-[4/3] overflow-hidden rounded-tarjeta bg-arena md:aspect-[5/4]">
-            <Foto
-              src={FOTO_HERO}
-              alt="Domo de Alto del Roble frente a la represa al atardecer"
-              sizes="(min-width: 768px) 50vw, 100vw"
-              prioridad
-            />
-          </div>
-        </div>
-      </section>
+      <HeroInmersivo />
 
       {/* 2 · Los 6 domos */}
       <Seccion
@@ -105,19 +58,15 @@ export default function Inicio() {
         subtitulo="Misma tarifa para los seis. Elige por lo que hay alrededor: privacidad, tina, fogata o espacio para más personas."
       >
         <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {DOMOS.map((domo) => (
-            <li key={domo.id} className="flex">
+          {DOMOS.map((domo, i) => (
+            <li key={domo.id} className="flex" data-revelar style={retraso(i % 3)}>
               <DomoCard domo={domo} />
             </li>
           ))}
         </ul>
-        <Link
-          href="/domos"
-          className="mt-8 inline-flex items-center gap-2 font-medium text-bosque underline underline-offset-4"
-        >
+        <EnlaceFlecha href="/domos" className="mt-8">
           Comparar los domos lado a lado
-          <ArrowRight {...ICONO} />
-        </Link>
+        </EnlaceFlecha>
       </Seccion>
 
       {/* 3 · Extras destacados — el problema #1: nadie sabe que existen */}
@@ -127,8 +76,10 @@ export default function Inicio() {
         subtitulo="Cena en tu terraza, masaje en el domo o decoración para una fecha especial. Los agregas al reservar y ya están listos cuando llegas."
       >
         <div className="grid gap-6 md:grid-cols-3">
-          {EXTRAS.map((extra) => (
-            <ExtraCard key={extra.id} extra={extra} />
+          {EXTRAS.map((extra, i) => (
+            <div key={extra.id} className="flex" data-revelar style={retraso(i, 120)}>
+              <ExtraCard extra={extra} />
+            </div>
           ))}
         </div>
         <ButtonLink href="/experiencias" variante="secundario" className="mt-8">
@@ -142,9 +93,9 @@ export default function Inicio() {
         subtitulo="Sabemos que reservar directo genera dudas. Así las resolvemos."
       >
         <ul className="grid gap-8 md:grid-cols-2">
-          {CONFIANZA.map(({ icono: Icono, titulo, texto }) => (
-            <li key={titulo} className="flex gap-4">
-              <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-arena text-bosque">
+          {CONFIANZA.map(({ icono: Icono, titulo, texto }, i) => (
+            <li key={titulo} className="group flex gap-4" data-revelar style={retraso(i)}>
+              <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-arena text-bosque transition-[background-color,color,transform] duration-500 ease-salida group-hover:scale-110 group-hover:bg-bosque group-hover:text-blanco">
                 <Icono {...ICONO} />
               </span>
               <div>
@@ -154,29 +105,34 @@ export default function Inicio() {
             </li>
           ))}
         </ul>
-        <div className="mt-12 flex flex-col items-center gap-3 rounded-tarjeta border border-borde p-8 text-center md:p-12">
-          <p className="text-h2 text-bosque">Tu domo queda confirmado al instante</p>
-          <p className="text-marron">Elige tus fechas, agrega lo que quieras y paga en línea.</p>
-          <ButtonLink href="/reservar" className="mt-4 w-full sm:w-auto sm:px-12">
-            Reservar tu domo
-          </ButtonLink>
+        <div
+          data-revelar="escala"
+          className="relative mt-12 overflow-hidden rounded-tarjeta px-6 py-16 text-center text-blanco md:py-24"
+        >
+          <Foto src={FOTO_CIERRE} alt="" sizes="(min-width: 1240px) 1200px, 100vw" />
+          <div className="absolute inset-0 bg-gradient-to-t from-carbon/85 via-carbon/55 to-carbon/30" />
+          <div className="relative flex flex-col items-center gap-3">
+            <p className="text-h2">Tu domo queda confirmado al instante</p>
+            <p className="max-w-md opacity-90">
+              Elige tus fechas, agrega lo que quieras y paga en línea. Sin esperar respuesta.
+            </p>
+            <ButtonLink href="/reservar" className="mt-4 w-full sm:w-auto sm:px-12">
+              Reservar tu domo
+            </ButtonLink>
+          </div>
         </div>
       </Seccion>
 
       {/* 5 · Cómo llegar (preview) */}
       <Seccion fondo="arena" titulo="Cómo llegar">
         <div className="grid gap-8 md:grid-cols-[1.2fr_1fr] md:items-center">
-          <div>
+          <div data-revelar="izquierda">
             <p>{COMO_LLEGAR.resumen}</p>
-            <Link
-              href="/como-llegar"
-              className="mt-6 inline-flex items-center gap-2 font-medium text-bosque underline underline-offset-4"
-            >
+            <EnlaceFlecha href="/como-llegar" className="mt-6">
               Ver indicaciones y qué llevar
-              <ArrowRight {...ICONO} />
-            </Link>
+            </EnlaceFlecha>
           </div>
-          <ul className="space-y-4">
+          <ul className="space-y-4" data-revelar="derecha" style={retraso(1)}>
             <li className="flex items-center gap-3">
               <Car {...ICONO} className="text-bosque" />
               Unas 2 horas desde Bogotá

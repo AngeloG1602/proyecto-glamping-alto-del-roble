@@ -36,6 +36,8 @@ const fotosDomo = (clave: string) => [1, 2, 3, 4].map((n) => foto(`${clave}-${n}
 
 /** Foto principal del inicio */
 export const FOTO_HERO = foto("hero");
+/** Foto de fondo del bloque final de reserva en el inicio */
+export const FOTO_CIERRE = foto("tomine-1");
 /** Foto de paisaje para /nosotros */
 export const FOTO_PAISAJE = foto("paisaje-represa");
 

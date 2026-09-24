@@ -25,7 +25,7 @@ export function Seccion({
     >
       <div className="contenedor">
         {titulo && (
-          <header className="mb-8 max-w-2xl md:mb-12">
+          <header data-revelar className="mb-8 max-w-2xl md:mb-12">
             <h2 className="text-h2 text-bosque">{titulo}</h2>
             {subtitulo && <p className="mt-4 text-marron">{subtitulo}</p>}
           </header>

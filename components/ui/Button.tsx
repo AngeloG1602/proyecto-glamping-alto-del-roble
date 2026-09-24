@@ -7,14 +7,19 @@ import { ICONO } from "./icono";
  * F1-03 · Button. Primario = cobre, reservado para acciones (reservar, pagar — F1-06 §4).
  * Secundario = contorno verde bosque.
  */
-type Variante = "primario" | "secundario";
+type Variante = "primario" | "secundario" | "claro";
 
 const BASE =
-  "relative inline-flex min-h-12 items-center justify-center gap-2 rounded-boton px-6 py-3 text-boton transition-colors disabled:pointer-events-none disabled:opacity-50";
+  "group/boton relative inline-flex min-h-12 items-center justify-center gap-2 overflow-hidden rounded-boton px-6 py-3 text-boton transition-[background-color,color,border-color,transform,box-shadow] duration-300 ease-salida active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50";
 
 const VARIANTES: Record<Variante, string> = {
-  primario: "bg-cobre text-blanco hover:bg-cobre-oscuro",
+  // Brillo que cruza el botón al pasar el cursor
+  primario:
+    "bg-cobre text-blanco hover:bg-cobre-oscuro hover:shadow-[0_8px_24px_-8px_rgb(168_85_38/0.6)] before:absolute before:inset-y-0 before:-left-1/2 before:w-1/3 before:-skew-x-12 before:bg-blanco/25 before:opacity-0 before:transition-[left,opacity] before:duration-700 before:ease-salida hover:before:left-[120%] hover:before:opacity-100",
   secundario: "border border-bosque bg-transparent text-bosque hover:bg-arena",
+  // Contorno claro para usar sobre imágenes o fondos oscuros
+  claro:
+    "border border-blanco/80 bg-blanco/5 text-blanco backdrop-blur-sm hover:bg-blanco hover:text-bosque",
 };
 
 export function clasesBoton(variante: Variante = "primario", extra = "") {
